@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using RealEstate.APi.Infrastructer;
 using RealEstate.Model;
 using RealEstate.Service;
 using System.Collections.Generic;
@@ -8,13 +10,16 @@ namespace RealEstate.APi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RealEstateController : ControllerBase
+    public class RealEstateController : BaseController
     {
         private readonly IRealEstateService realEstateService;
+        private readonly IMemoryCache memoryCache;
 
-        public RealEstateController(IRealEstateService _realEstateService)
+
+        public RealEstateController(IRealEstateService _realEstateService, IMemoryCache _memoryCache) : base(_memoryCache)
         {
             realEstateService = _realEstateService;
+            memoryCache = _memoryCache;
         }
         [HttpPost]
         public General<RealEstateViewModel> Insert([FromBody] RealEstateViewModel newRealEstate)
@@ -41,9 +46,32 @@ namespace RealEstate.APi.Controllers
             return realEstateService.Delete(id);
         }
 
+        [HttpGet("getestate")]
         public List<RealEstate.DB.Entities.RealEstate> GetEstate()
         {
             return realEstateService.GetEstate();
+        }
+
+        [HttpGet]
+        [Route("sort")]
+        public General<RealEstateViewModel> SortingRealEstate([FromQuery] string sortingType)
+        {
+            return realEstateService.SortingRealEstate(sortingType);
+        }
+
+        // Filtrelenmiş ürünlerin listeleneceği metodun servis katmanından çağırıldığı kısım
+        [HttpGet]
+        [Route("filter")]
+        public General<RealEstateViewModel> FilterRealEstate([FromQuery] string filterByName)
+        {
+            return realEstateService.FilterRealEstate(filterByName);
+        }
+
+        [HttpGet]
+        [Route("pagination")]
+        public General<RealEstateViewModel> RealEstatePagination([FromQuery] int realEstateByPage, [FromQuery] int displayPageNo)
+        {
+            return realEstateService.RealEstatePagination(realEstateByPage, displayPageNo);
         }
     }
 }

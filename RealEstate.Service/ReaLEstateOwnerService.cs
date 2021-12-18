@@ -29,7 +29,7 @@ namespace Groot.Service.User
             using (var context = new RealEstateContext())
             {
                 var data = context.RealEstateOwner.FirstOrDefault(x => 
-                                                x.Email == loginUser.UserName &&
+                                                x.Email == loginUser.Email &&
                                                 x.Password == loginUser.Password);
                 if (data is not null)
                 {

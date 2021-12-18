@@ -13,6 +13,9 @@ namespace RealEstate.APi.Infrastructer
 
             CreateMap<RealEstateViewModel, RealEstate.DB.Entities.RealEstate>();
             CreateMap<RealEstate.DB.Entities.RealEstate, RealEstateViewModel>();
+
+            CreateMap<RealEstateOwner, LoginModel>();
+            CreateMap<LoginModel, RealEstateOwner>();
         }
 
     }

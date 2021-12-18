@@ -15,6 +15,10 @@ namespace RealEstate.Service
         public General<RealEstateViewModel> Update(int id, RealEstateViewModel realEstate);
         public General<RealEstateViewModel> Delete(int id);
         public List<RealEstate.DB.Entities.RealEstate> GetEstate();
+        public General<RealEstateViewModel> SortingRealEstate(string sortingType);
+        public General<RealEstateViewModel> RealEstatePagination(decimal realEstateByPage, int displayPageNo);
+        public General<RealEstateViewModel> FilterRealEstate(string filterByName);
+
 
 
     }

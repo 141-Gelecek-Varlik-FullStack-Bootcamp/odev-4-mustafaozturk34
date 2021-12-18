@@ -34,6 +34,7 @@
       "RealEstate.APi/1.0.0": {
         "dependencies": {
           "AutoMapper": "10.1.1",
+          "ReaLEstate.Extension": "1.0.0",
           "RealEstate.DB": "1.0.0",
           "RealEstate.Model": "1.0.0",
           "RealEstate.Service": "1.0.0",
@@ -1365,6 +1366,14 @@
         },
         "compile": {
           "RealEstate.DB.dll": {}
+        }
+      },
+      "ReaLEstate.Extension/1.0.0": {
+        "runtime": {
+          "ReaLEstate.Extension.dll": {}
+        },
+        "compile": {
+          "ReaLEstate.Extension.dll": {}
         }
       },
       "RealEstate.Model/1.0.0": {
@@ -3790,6 +3799,11 @@
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
     "RealEstate.DB/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ReaLEstate.Extension/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

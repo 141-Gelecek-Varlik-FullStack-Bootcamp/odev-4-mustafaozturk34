@@ -40,6 +40,7 @@ namespace RealEstate.APi
             services.AddSingleton<IRealEstateOwnerService, RealEstateOwnerService>();
             services.AddSingleton<IRealEstateService, RealEstateService>();
 
+            services.AddMemoryCache();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

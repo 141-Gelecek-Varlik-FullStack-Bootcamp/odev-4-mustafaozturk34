@@ -96,7 +96,7 @@ namespace RealEstate.Service
 
                 if (updateRealEstate is not null)
                 {
-                    updateRealEstate.Price= realEstate.Price;
+                    updateRealEstate.Price = realEstate.Price;
                     updateRealEstate.SquareMeters = realEstate.SquareMeters;
                     updateRealEstate.Type = realEstate.Type;
 
@@ -142,7 +142,96 @@ namespace RealEstate.Service
             return result;
         }
 
+        public General<RealEstateViewModel> SortingRealEstate(string sortingType)
+        {
+            var result = new General<RealEstateViewModel>();
+            using (var context = new RealEstateContext())
+            {
+                var realEstate = context.RealEstate.Where(x => x.Id > 0);
 
+                switch (sortingType)
+                {
+                    case "Name":
+                        realEstate = realEstate.OrderBy(x => x.Name);
+                        break;
+                    case "DescName":
+                        realEstate = realEstate.OrderByDescending(x => x.Name);
+                        break;
+                    case "Price":
+                        realEstate = realEstate.OrderBy(x => x.Price);
+                        break;
+                    case "DescPrice":
+                        realEstate = realEstate.OrderByDescending(x => x.Price);
+                        break;
+                    case "SquareMeters":
+                        realEstate = realEstate.OrderBy(x => x.SquareMeters);
+                        break;
+                    case "DescSquareMeters":
+                        realEstate = realEstate.OrderByDescending(x => x.SquareMeters);
+                        break;
+                    case "Type":
+                        realEstate = realEstate.OrderBy(x => x.Type);
+                        break;
+                    case "DescType":
+                        realEstate = realEstate.OrderByDescending(x => x.Type);
+                        break;
+                    default:
+                        realEstate = realEstate.OrderBy(x => x.Id);
+                        break;
+                }
 
+                result.List = mapper.Map<List<RealEstateViewModel>>(realEstate);
+            }
+
+            return result;
+        }
+
+        public General<RealEstateViewModel> RealEstatePagination(decimal realEstateByPage, int displayPageNo)
+        {
+            var result = new General<RealEstateViewModel>();
+            decimal _totalCount = 0;
+            decimal _totalPage = 0;
+
+            using (var context = new RealEstateContext())
+            {
+                result.TotalCount = context.RealEstate.Count();
+                _totalCount = result.TotalCount;
+                _totalPage = Math.Ceiling(_totalCount / realEstateByPage);
+
+                var _realEstate = context.RealEstate
+                                        .OrderBy(i => i.Id)
+                                        .Skip((int)((displayPageNo - 1) * realEstateByPage))
+                                        .Take((int)realEstateByPage).ToList();
+
+                result.List = mapper.Map<List<RealEstateViewModel>>(_realEstate);
+            }
+
+            result.TotalPage = _totalPage;
+
+            return result;
+        }
+
+        public General<RealEstateViewModel> FilterRealEstate(string filterByName)
+        {
+            var result = new General<RealEstateViewModel>();
+            using (var context = new RealEstateContext())
+            {
+                var realEstate = context.RealEstate.Where(x => x.Id > 0);
+
+                if (filterByName != null || filterByName != "")
+                {
+                    realEstate = realEstate.Where(i => i.Name.StartsWith(filterByName));
+                }
+                else
+                {
+                    result.ExceptionMessage = "Please your search again";
+                    return result;
+                }
+
+                result.List = mapper.Map<List<RealEstateViewModel>>(realEstate);
+            }
+
+            return result;
+        }
     }
 }

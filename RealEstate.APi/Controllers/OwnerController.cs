@@ -19,17 +19,17 @@ namespace RealEstate.APi.Controllers
         }
 
         [HttpPost]
+        [ServiceFilter(typeof(LoginFilter))]
         public General<RealEstateOwnerViewModel> Insert([FromBody] RealEstateOwnerViewModel newUser)
         {
             var result = false;
             return realEstateOwnerService.Insert(newUser);
         }
 
-        [LoginFilter]
         [HttpPost("login")]
-        public bool Login(string email, string password)
+        public General<RealEstateOwnerViewModel> Login(LoginModel loginUser)
         {
-            return realEstateOwnerService.Login(email, password);
+            return realEstateOwnerService.Login(loginUser);
         }
 
         [HttpGet]
